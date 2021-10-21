@@ -21,6 +21,7 @@ def main(base_dir, group_size: int = 100, group_by_difficulty: bool = False):
 
 
 def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: bool = False) -> Dict[Path, Path]:
+    "获得 文件来源 和 去处的映射关系"
     file_path_mapping = {}
     failed_move_file_path = []
     for dir_path, dir_names, filenames in os.walk(base_dir):
@@ -28,6 +29,8 @@ def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: b
             if filename.startswith('__'):
                 continue
             source_path = Path(dir_path).joinpath(filename)
+            move_path = None
+            # 按 题号切分
             if group_by_difficulty == False:
                 num_reg = re.compile('(\d+).py')
                 match_result = num_reg.search(filename)
@@ -41,6 +44,7 @@ def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: b
                     move_path.joinpath(filename)
                 else:
                     failed_move_file_path.append(f"Filename Mast Match reg \d+.py _{str(source_path)}")
+            # 按难度切分
             else:
                 with open(source_path) as f:
                     content = f.read()
@@ -69,7 +73,7 @@ def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: b
 
 
 if __name__ == '__main__':
-    base_dir = './done_job'
+    base_dir = './warehouse_job'
     group_size = os.getenv('group_size', 100)
     group_by_difficulty = False
 
