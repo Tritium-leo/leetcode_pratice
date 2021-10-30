@@ -73,11 +73,23 @@ def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: b
 
 
 if __name__ == '__main__':
-    base_dir = './warehouse_job'
-    group_size = os.getenv('group_size', 100)
-    group_by_difficulty = False
+    u_input = input("请输入 要执行的功能（group/find）").lower()
+    if u_input == "group":
+        base_dir = './warehouse_job'
+        group_size = os.getenv('group_size', 100)
+        group_by_difficulty = False
 
-    if group_by_difficulty:
-        main(base_dir, group_by_difficulty)
-    else:
-        main(base_dir, group_size)
+        if group_by_difficulty:
+            main(base_dir, group_by_difficulty)
+        else:
+            main(base_dir, group_size)
+    elif u_input == "find":
+        u_need = input("请输入你要找的题号：")
+        base_dir = Path('./find_result')
+        store_path = Path(f'./warehouse_job/test_{u_need}.py')
+        base_dir.mkdir(parents=True,exist_ok=True)
+        if store_path.exists():
+            shutil.copy(store_path, base_dir.joinpath(store_path.name))
+            print(f'已找到题 输出至 {base_dir}')
+        else:
+            print(f'不存在 题号为 {u_need}的题目')
