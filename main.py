@@ -74,7 +74,7 @@ def get_mapping_relation(base_dir, group_size: int = 100, group_by_difficulty: b
 
 if __name__ == '__main__':
     u_input = input("请输入 要执行的功能（group/find）").lower()
-    if u_input == "group":
+    if u_input.lower() == "group":
         base_dir = './warehouse_job'
         group_size = os.getenv('group_size', 100)
         group_by_difficulty = False
@@ -83,7 +83,7 @@ if __name__ == '__main__':
             main(base_dir, group_by_difficulty)
         else:
             main(base_dir, group_size)
-    elif u_input == "find":
+    elif u_input.lower() == "find":
         u_need = input("请输入你要找的题号：")
         base_dir = Path('./find_result')
         store_path = Path(f'./warehouse_job/test_{u_need}.py')
